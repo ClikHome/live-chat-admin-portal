@@ -1,0 +1,45 @@
+{% extends 'portal/base.html' %}
+
+{% block title %}
+    Delete channel {{ channel.title }}
+{% endblock %}
+
+{% block content %}
+    <section class="panel">
+        <div class="text-center">
+            <h2>Are you sure you want to remove this channel?</h2>
+            <div class="clearfix"></div>
+        </div>
+
+        <br />
+
+        <div class="panel-body text-center">
+            <h3 class="green"><i class="fa fa-comments-o"></i> {{ channel.title }}</h3>
+
+            <div class="project_detail">
+                <p><i class="fa fa-calendar"></i> <b>Created at:</b>
+                    <i>{{ channel.created_at }}</i>
+                </p>
+
+                <p><i class="fa fa-calendar"></i> <b>Website:</b>
+                    <i><a href="{{ channel.site }}">{{ channel.domain }}</a></i>
+                </p>
+
+            </div>
+
+            <br/><br/>
+
+            <form action="{% url 'channel-remove' pk=channel.pk %}" method="post">
+                {% csrf_token %}
+                <div class="text-center mtop20">
+                    <a href="{% url 'channel-list' %}" class="btn btn-sm btn-primary">Cancel</a>
+                    <button type="submit" class="btn btn-sm btn-danger">Remove channel</button>
+                </div>
+            </form>
+
+
+
+        </div>
+
+      </section>
+{% endblock %}

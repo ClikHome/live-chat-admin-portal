@@ -1,0 +1,134 @@
+{% extends 'portal/base.html' %}
+{% load static %}
+{% load widget_tweaks %}
+{% load i18n %}
+{% load validation_fields %}
+
+
+{% block title %}
+    Edit channel
+{% endblock %}
+
+{% block stylesheet %}
+    <style type="text/css" media="all">
+        #success_message{
+            display: none;
+        }
+
+        .with-errors li {
+            color: red;
+        }
+    </style>
+{% endblock %}
+
+{% block content %}
+    <h3>Edit channel <b>"{{ channel.title }}"</b></h3>
+
+    <form action="{% url 'channel-edit' pk=channel.pk %}" method="post" class="well form-horizontal form-label-left"
+          id="channel_edit">
+        {% csrf_token %}
+
+        {% for field in form %}
+            <div class="form-group">
+                <label class="control-label col-md-3" for="{{ field.id_for_label }}">
+                    {{ field.label }}
+                </label>
+
+                <div class="col-md-7">
+                    {{ field }}
+                </div>
+
+                <div class="help-block with-errors">
+                    {% if field.errors %}
+                        {{ field.errors }}
+                    {% endif %}
+                </div>
+            </div>
+
+        {% endfor %}
+
+        <br />
+
+        <div class="col-md-6 col-sm-6 col-xs-12 col-md-offset-3">
+            <button type="reset" class="btn btn-primary">Cancel</button>
+            <button type="submit" class="btn btn-success">Save</button>
+        </div>
+    </form>
+
+{% endblock %}
+
+{% block script %}
+    <script>
+        function extractDomain(url) {
+            var domain;
+            //find & remove protocol (http, ftp, etc.) and get domain
+            if (url.indexOf("://") > -1) {
+                domain = url.split('/')[2];
+            }
+            else {
+                domain = url.split('/')[0];
+            }
+
+            //find & remove port number
+            domain = domain.split(':')[0];
+
+            return domain;
+        }
+
+        $(document).ready(function() {
+            $('#channel_edit').bootstrapValidator({
+                message: 'This value is not valid',
+                feedbackIcons: {
+                    valid: 'glyphicon glyphicon-ok',
+                    invalid: 'glyphicon glyphicon-remove',
+                    validating: 'glyphicon glyphicon-refresh'
+                },
+
+                fields: {
+                    title: {
+                        message: 'The username is not valid',
+                        validators: {
+                            notEmpty: {
+                                message: 'Field required'
+                            },
+
+                            stringLength: {
+                                min: 6,
+                                max: 30,
+                                message: 'The username must be more than 6 and less than 30 characters long'
+                            },
+
+                            callback: {
+                                message: 'This title already used',
+                                callback: function(value, validator) {
+                                    {% validation_values field='title' user=user exclude=channel.title as titles %}
+                                    return $.inArray(value, {{ titles|safe }}) < 0;
+                                }
+                            }
+                        }
+                    },
+
+                    site: {
+                        validators: {
+                            notEmpty: {
+                                message: 'The email is required and cannot be empty'
+                            },
+
+                            uri: {
+                                message: 'The website address is not valid'
+                            },
+
+                            callback: {
+                                message: 'This domain already used',
+                                callback: function(value, validator) {
+                                    {% validation_values field='domain' user=user exclude=channel.domain as domains %}
+                                    return $.inArray(extractDomain(value), {{ domains|safe }}) < 0;
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+        });
+    </script>
+{% endblock %}

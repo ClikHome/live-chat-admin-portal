@@ -1,0 +1,195 @@
+{% extends 'portal/base.html' %}
+{% load static %}
+
+{% block title %}
+    Channels
+{% endblock %}
+
+{% block stylesheet %}
+    {% include 'portal/_parts/datasets_css.html' %}
+{% endblock %}
+
+{% block content %}
+    <h3>Channels</h3>
+    <br /><br />
+
+    <table class="table table-striped jambo_table bulk_action" id="channels">
+        <thead>
+            <tr class="headings">
+                <th class="column-title" style="display: table-cell;">Id </th>
+                <th class="column-title" style="display: table-cell;">Channel name </th>
+                <th class="column-title" style="display: table-cell;">Domain </th>
+                <th class="column-title" style="display: table-cell;">Created at </th>
+                <th class="column-title" style="display: table-cell;">Status </th>
+                <th class="column-title" style="display: table-cell;">Users </th>
+                <th class="column-title" style="display: table-cell;">Messages </th>
+                <th class="column-title" style="display: table-cell;">Actions </th>
+          </tr>
+        </thead>
+
+        <tbody>
+            {% for channel in channels %}
+                <tr class="even pointer">
+                    <td class=" ">{{ channel.pk }}</td>
+
+                    <td class=" ">
+                        <a href="{% url 'channel-detail' pk=channel.pk %}">
+                            {{ channel.title }}
+                        </a>
+                    </td>
+                    <td class=" ">
+                        <a href="{{ channel.site }}">{{ channel.domain }}</a>
+                    </td>
+                    <td class=" ">{{ channel.created_at }}</td>
+                    <td class=" ">
+                        {% if channel.is_active %}
+                            <span class="label label-success">Active</span>
+                        {% else %}
+                            <span class="label label-warning">Stopped</span>
+                        {% endif %}
+                    </td>
+                    <td class=" ">{{ channel.users }}</td>
+                    <td class=" ">{{ channel.messages }}</td>
+                    <td>
+                        <a href="{% url 'channel-detail' pk=channel.pk %}" class="btn btn-primary btn-xs">
+                            <i class="fa fa-folder"></i> View </a>
+                        <a href="{% url 'channel-edit' pk=channel.pk %}" class="btn btn-info btn-xs">
+                            <i class="fa fa-pencil"></i> Edit </a>
+                        <a href="{% url 'channel-remove' pk=channel.pk %}" class="btn btn-danger btn-xs">
+                            <i class="fa fa-trash-o"></i> Delete </a>
+                      </td>
+                </tr>
+            {% endfor %}
+        </tbody>
+      </table>
+
+    <!-- Modal -->
+    <!--
+    <div class="modal fade" id="create-new-channel" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <h4 class="modal-title" id="myModalLabel">Modal title</h4>
+          </div>
+          <div class="modal-body">
+            <div class="form-group">
+
+                <form class="form-horizontal form-label-left" id="channel-create">
+                  <div class="form-group">
+                    <label class="control-label col-md-3" for="channel-title">Channel title <span class="required">*</span>
+                    </label>
+                    <div class="col-md-7">
+                      <input type="text" id="channel-title" name="title" required="required"
+                             class="form-control col-md-7 col-xs-12" value="Channel #4">
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <label class="control-label col-md-3" for="channel-site">Site <span class="required">*</span>
+                    </label>
+                    <div class="col-md-7">
+                      <input type="text" id="channel-site" name="site" required="required"
+                             class="form-control col-md-7 col-xs-12" placeholder="http://google.com" value="http://game.com">
+                    </div>
+                  </div>
+                </form>
+
+              </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            <button type="button" id="create" class="btn btn-primary">Create Channel</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    -->
+
+    <button type="button" class="btn btn-success btn-sm" data-toggle="modal" data-target="#create-new-channel"
+            onclick="location.href='{% url "channel-create" %}';">
+        Create new channel
+    </button>
+
+{% endblock %}
+
+
+{% block script %}
+    {% include 'portal/_parts/datasets_js.html' %}
+
+    <script>
+        $('#channels').dataTable();
+    </script>
+
+    <!--
+    <script>
+        $('#channels').dataTable();
+
+        function get_table_head(dom) {
+            var thArray = [];
+
+            $(dom).each(function(){
+                thArray.push($(this).text().replace(/^\s+|\s+$/g, ''))
+            });
+
+            return thArray;
+        }
+
+        function add_values_as_tr(table_dom, head_doom, values) {
+            var head_th = get_table_head(head_doom);
+
+            var line = $('<tr/>', {
+                'class': 'even pointer',
+                'html': '<td class="a-center "></td>'
+            });
+
+            head_th.forEach(function(item, i, arr) {
+                if (typeof values[item] != 'boolean') {
+                    $('<td/>', {
+                        'class': " ",
+                        'text': values[item]
+                    }).appendTo(line);
+                } else {
+                    if (values[item] == true) {
+                        var badge_html = '<span class="label label-success">Active</span>';
+                    } else {
+                        var badge_html = '<span class="label label-warning">Stopped</span>';
+                    }
+
+                    $('<td/>', {'class': " ", 'html': badge_html}).appendTo(line);
+                }
+            });
+
+            $('#channels').append(line)
+        }
+
+        $("#create").click(function() {
+            $.ajax({
+                type: 'POST',
+                url: '{% url 'channel-create' %}',
+                data: $('#channel-create').serialize(),
+                success: function(data){
+                    if (data.created == true) {
+                        var d = data.channel;
+                        add_values_as_tr('#channel-create', '.headings > th', {
+                            "Id": d['pk'],
+                            "Channel name": d['title'],
+                            "Domain": d['domain'],
+                            "Created at": d['created_at'],
+                            "Status": d['is_active'],
+                            "Users": "0",
+                            "Messages": "0"
+                        });
+
+                        $('#create-new-channel').modal('hide');
+
+                    } else if (data.created == false) {
+                        $('#create-new-channel').modal('hide');
+                    }
+                }
+            })
+        });
+
+
+    </script>
+    -->
+{% endblock %}
