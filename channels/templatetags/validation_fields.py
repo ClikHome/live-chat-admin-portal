@@ -12,7 +12,7 @@ register = template.Library()
 
 @register.simple_tag(name='validation_values')
 def channel_field(field, user, exclude=None):
-    channels = Channel.objects.filter(superuser=user)
+    channels = Channel.objects.filter(owner=user)
     fields = list(channels.values_list(field, flat=True))
 
     if isinstance(exclude, (str, unicode)) and exclude in fields:

@@ -11,7 +11,7 @@ urlpatterns = [
         url(
             r'^history/$',
             MessagesHistory.as_view({'post': 'list'}),
-
+            name='api_get_messages'
         ),
 
     ]))

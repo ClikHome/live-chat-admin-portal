@@ -1,20 +1,38 @@
-#!/usr/bin/env python
-# -*- coding: utf-8 -*-
-
 from __future__ import unicode_literals
 
 from django.db import models
 from django.utils import timezone
 from django.utils.translation import ugettext_lazy as _
-from django.conf import settings
-
-from datetime import datetime
 from dateutil.relativedelta import relativedelta
+from django.conf import settings
 import redis
-import json
 
 from channels.models import Channel
 from LiveChatBackend.managers import OnlyActiveManager
+
+
+class ModelMixin(models.Model):
+    is_active = models.BooleanField(
+        _('Is active'),
+        default=True
+    )
+
+    created_at = models.DateTimeField(
+        _('Created at'),
+        auto_now_add=True
+    )
+
+    updated_at = models.DateTimeField(
+        _('Updated at'),
+        auto_now=True
+    )
+
+    # Managers
+    objects = models.Manager()
+    active = OnlyActiveManager()
+
+    class Meta:
+        abstract = True
 
 
 class ChatUserRole(models.Model):
@@ -33,53 +51,35 @@ class ChatUserRole(models.Model):
         return self.title
 
 
-class ChatUser(models.Model):
+class ChatUser(ModelMixin, models.Model):
     class Meta:
         verbose_name = _('user')
         verbose_name_plural = _('Users')
-        unique_together = ('username', 'channel')
+        unique_together = [
+            ('username', 'channel'),
+            ('phone', 'channel'),
+        ]
         ordering = ('username',)
 
     username = models.CharField(max_length=50)
+    phone = models.CharField(max_length=50, null=True)
     ip = models.GenericIPAddressField(null=True, blank=True)
     channel = models.ForeignKey(Channel, related_name='user_channel')
-    created_at = models.DateTimeField(auto_now_add=True)
-    updated_at = models.DateTimeField(auto_now=True)
     last_activity = models.DateTimeField(null=True, blank=True)
-    is_active = models.BooleanField(default=True)
 
     # managers
     objects = models.Manager()
     active = OnlyActiveManager()
 
-    @classmethod
-    def from_json(cls, data):
-        if isinstance(data, (unicode, str)):
-            data = json.loads(data)
-        elif not isinstance(data, dict):
-            raise TypeError
-
-        created_at = datetime.strptime(
-            data['created_at'], settings.MESSAGES_DATETIME_FORMAT)
-
-        return cls(
-            username=data['username'],
-            channel_id=int(data['channel_id']),
-            last_activity=created_at,
-            created_at=created_at,
-            ip=data['ip'],
-            is_active=True
-        )
-
     def save(self, *args, **kwargs):
         super(ChatUser, self).save(*args, **kwargs)
 
         # Save user to redis
-        r = redis.Redis(*settings.REDIS_CONNECTION)
-        r.hset('channel:{}:users:id'.format(self.channel.uid), self.username, self.pk)
+        # r = redis.Redis(*settings.REDIS_CONNECTION)
+        # r.hset('channel:{}:users:id'.format(self.channel.uid), self.username, self.pk)
 
     def __unicode__(self):
-        return self.username
+        return unicode(self.username)
 
 
 class ChatSession(models.Model):

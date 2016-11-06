@@ -4,12 +4,19 @@
         <h3>Menu</h3>
 
         <ul class="nav side-menu">
-            <li><a><i class="fa fa-comments-o"></i> Channels <span class="fa fa-chevron-down"></span></a>
+            <li><a><i class="fa fa-briefcase"></i> Channels <span class="fa fa-chevron-down"></span></a>
                 <ul class="nav child_menu">
+                    <li><a href="{% url 'channel-create' %}">Create channel...</a></li>
                     <li><a href="{% url 'channel-list' %}">Channels list</a></li>
                 </ul>
             </li>
 
+            <li><a><i class="fa fa-briefcase"></i> Domains <span class="fa fa-chevron-down"></span></a>
+                <ul class="nav child_menu">
+                    <li><a href="{% url 'domain-create' %}">Create domain...</a></li>
+                    <li><a href="{% url 'domain-list' %}">Domains list</a></li>
+                </ul>
+            </li>
 
             <li><a><i class="fa fa-user"></i> Users <span class="fa fa-chevron-down"></span></a>
                 <ul class="nav child_menu">
@@ -17,7 +24,11 @@
                 </ul>
             </li>
 
-
+            <li><a><i class="fa fa-comments-o"></i> Messages <span class="fa fa-chevron-down"></span></a>
+                <ul class="nav child_menu">
+                    <li><a href="{% url 'chat' %}">Chat</a></li>
+                </ul>
+            </li>
 
         </ul>
     </div>

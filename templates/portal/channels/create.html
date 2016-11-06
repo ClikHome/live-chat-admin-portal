@@ -9,6 +9,9 @@
 {% endblock %}
 
 {% block stylesheet %}
+    <!-- Chosen Plugin CSS -->
+    <link href="{% static 'vendors/chosen/chosen.min.css' %}" rel="stylesheet">
+
     <style type="text/css" media="all">
         #success_message{
             display: none;
@@ -27,24 +30,38 @@
           id="channel_create">
         {% csrf_token %}
 
-        {% for field in form %}
-            <div class="form-group">
-                <label class="control-label col-md-3" for="{{ field.id_for_label }}">
-                    {{ field.label }}
-                </label>
+        {# Title #}
+        <div class="form-group">
+            <label class="control-label col-md-3" for="{{ form.title.id_for_label }}">
+                {{ form.title.label }}
+            </label>
 
-                <div class="col-md-7">
-                    {{ field }}
-                </div>
-
-                <div class="help-block with-errors">
-                    {% if field.errors %}
-                        {{ field.errors }}
-                    {% endif %}
-                </div>
+            <div class="col-md-7">
+                {{ form.title }}
             </div>
+        </div>
 
-        {% endfor %}
+        {# Websites #}
+        <div class="form-group">
+            <label class="control-label col-md-3" for="{{ form.websites.id_for_label }}">
+                {{ form.websites.label }}
+            </label>
+
+            <div class="col-md-7">
+                {{ form.websites }}
+            </div>
+        </div>
+
+        {# Is Active #}
+        <div class="form-group">
+            <label class="control-label col-md-3" for="{{ form.is_active.id_for_label }}">
+                {{ form.is_active.label }}
+            </label>
+
+            <div class="col-md-7">
+                {{ form.is_active }}
+            </div>
+        </div>
 
         <br />
 
@@ -57,6 +74,9 @@
 {% endblock %}
 
 {% block script %}
+    <!-- Chosen Plugin JS -->
+    <script src="{% static 'vendors/chosen/chosen.jquery.min.js' %}"></script>
+
     <script>
         function extractDomain(url) {
             var domain;
@@ -75,59 +95,74 @@
         }
 
         $(document).ready(function() {
-            $('#channel_create').bootstrapValidator({
-                message: 'This value is not valid',
-                feedbackIcons: {
-                    valid: 'glyphicon glyphicon-ok',
-                    invalid: 'glyphicon glyphicon-remove',
-                    validating: 'glyphicon glyphicon-refresh'
-                },
+            $('#channel_create')
+                .find('[name="websites"]')
+                    .chosen({
+                        no_results_text: 'All domains used',
+                        placeholder_text_multiple: 'Select some domains'
+                    })
 
-                fields: {
-                    title: {
-                        message: 'The username is not valid',
-                        validators: {
-                            notEmpty: {
-                                message: 'Field required'
-                            },
-
-                            stringLength: {
-                                min: 6,
-                                max: 30,
-                                message: 'The username must be more than 6 and less than 30 characters long'
-                            },
-
-                            callback: {
-                                message: 'This title already used',
-                                callback: function(value, validator) {
-                                    {% validation_values 'title' user as titles %}
-                                    return $.inArray(value, {{ titles|safe }}) < 0;
-                                }
-                            }
-                        }
+                    // Re-validate the color when it is changed
+                    .change(function(e) {
+                        $('#channel_edit')
+                                .data('bootstrapValidator')
+                                .updateStatus('websites', 'NOT_VALIDATED')
+                                .validateField('websites');
+                    })
+                    .end()
+                .bootstrapValidator({
+                    message: 'This value is not valid',
+                    feedbackIcons: {
+                        valid: 'glyphicon glyphicon-ok',
+                        invalid: 'glyphicon glyphicon-remove',
+                        validating: 'glyphicon glyphicon-refresh'
                     },
 
-                    site: {
-                        validators: {
-                            notEmpty: {
-                                message: 'The email is required and cannot be empty'
-                            },
+                    fields: {
+                        title: {
+                            message: 'The username is not valid',
+                            validators: {
+                                notEmpty: {
+                                    message: 'Field required'
+                                },
 
-                            uri: {
-                                message: 'The website address is not valid'
-                            },
+                                stringLength: {
+                                    min: 6,
+                                    max: 30,
+                                    message: 'The username must be more than 6 and less than 30 characters long'
+                                },
 
-                            callback: {
-                                message: 'This domain already used',
-                                callback: function(value, validator) {
-                                    {% validation_values 'domain' user as domains %}
-                                    return $.inArray(extractDomain(value), {{ domains|safe }}) < 0;
+                                callback: {
+                                    message: 'This title already used',
+                                    callback: function(value, validator) {
+                                        {% validation_values 'title' user as titles %}
+                                        return $.inArray(value, {{ titles|safe }}) < 0;
+                                    }
                                 }
+                            }
+                        },
+
+                        site: {
+                            validators: {
+                                notEmpty: {
+                                    message: 'The email is required and cannot be empty'
+                                },
+
+                                uri: {
+                                    message: 'The website address is not valid'
+                                },
+
+    {#                            callback: {#}
+    {#                                message: 'This domain already used',#}
+    {#                                callback: function(value, validator) {#}
+    {#                                    {% validation_values 'domain' user as domains %}#}
+    {#                                    return $.inArray(extractDomain(value), {{ domains|safe }}) < 0;#}
+    {#                                }#}
+    {#                            }#}
                             }
                         }
                     }
-                }
+                });
             });
-        });
     </script>
 {% endblock %}

@@ -1,0 +1,155 @@
+ВАЖНО:  файл блокировки "postmaster.pid" уже существует
+ПОДСКАЗКА:  Другой экземпляр postmaster (PID 10680) работает с каталогом данных "C:/Users/Eugene/database"?
+СООБЩЕНИЕ:  работа системы БД была прервана; последний момент работы: 2016-10-28 10:49:35 BDT
+ВАЖНО:  система баз данных запускается
+СООБЩЕНИЕ:  система БД была остановлена нештатно; производится автоматическое восстановление
+СООБЩЕНИЕ:  неверная длина записи по смещению 0/1F9CD48
+СООБЩЕНИЕ:  данные REDO не требуются
+СООБЩЕНИЕ:  Защита от наложения мультитранзакций сейчас включена
+СООБЩЕНИЕ:  процесс запуска автоочистки создан
+СООБЩЕНИЕ:  система БД готова принимать подключения
+ВАЖНО:  база данных "live_chat" не существует
+ВАЖНО:  база данных "live_chat" не существует
+СООБЩЕНИЕ:  процесс запуска автоочистки (PID 10952) завершился с кодом выхода 1
+СООБЩЕНИЕ:  завершение всех остальных активных серверных процессов
+СООБЩЕНИЕ:  все серверные процессы завершены... переинициализация
+СООБЩЕНИЕ:  работа системы БД была прервана; последний момент работы: 2016-10-28 10:51:44 BDT
+СООБЩЕНИЕ:  система БД была остановлена нештатно; производится автоматическое восстановление
+СООБЩЕНИЕ:  неверная длина записи по смещению 0/1F9CDB8
+СООБЩЕНИЕ:  данные REDO не требуются
+СООБЩЕНИЕ:  Защита от наложения мультитранзакций сейчас включена
+СООБЩЕНИЕ:  процесс запуска автоочистки создан
+СООБЩЕНИЕ:  система БД готова принимать подключения
+СООБЩЕНИЕ:  процесс контрольных точек (PID 10416) завершился с кодом выхода 1
+СООБЩЕНИЕ:  завершение всех остальных активных серверных процессов
+ПРЕДУПРЕЖДЕНИЕ:  закрытие подключения из-за краха другого серверного процесса
+ПОДРОБНОСТИ:  Управляющий процесс отдал команду этому серверному процессу откатить текущую транзакцию и завершиться, так как другой серверный процесс завершился аварийно и возможно разрушил разделяемую память.
+ПОДСКАЗКА:  Вы сможете переподключиться к базе данных и повторить вашу команду сию минуту.
+СООБЩЕНИЕ:  все серверные процессы завершены... переинициализация
+СООБЩЕНИЕ:  работа системы БД была прервана; последний момент работы: 2016-10-28 10:52:45 BDT
+СООБЩЕНИЕ:  система БД была остановлена нештатно; производится автоматическое восстановление
+СООБЩЕНИЕ:  неверная длина записи по смещению 0/1F9CE28
+СООБЩЕНИЕ:  данные REDO не требуются
+СООБЩЕНИЕ:  Защита от наложения мультитранзакций сейчас включена
+СООБЩЕНИЕ:  процесс запуска автоочистки создан
+СООБЩЕНИЕ:  система БД готова принимать подключения
+СООБЩЕНИЕ:  работа системы БД была прервана; последний момент работы: 2016-10-27 07:03:13 BDT
+СООБЩЕНИЕ:  система БД была остановлена нештатно; производится автоматическое восстановление
+СООБЩЕНИЕ:  неверная длина записи по смещению 0/1C9D8D0
+СООБЩЕНИЕ:  данные REDO не требуются
+СООБЩЕНИЕ:  Защита от наложения мультитранзакций сейчас включена
+СООБЩЕНИЕ:  процесс запуска автоочистки создан
+СООБЩЕНИЕ:  система БД готова принимать подключения
+СООБЩЕНИЕ:  не удалось получить данные от клиента: No connection could be made because the target machine actively refused it.
+	
+СООБЩЕНИЕ:  не удалось получить данные от клиента: No connection could be made because the target machine actively refused it.
+	
+СООБЩЕНИЕ:  не удалось получить данные от клиента: No connection could be made because the target machine actively refused it.
+	
+СООБЩЕНИЕ:  не удалось получить данные от клиента: No connection could be made because the target machine actively refused it.
+	
+СООБЩЕНИЕ:  не удалось получить данные от клиента: No connection could be made because the target machine actively refused it.
+	
+СООБЩЕНИЕ:  не удалось получить данные от клиента: No connection could be made because the target machine actively refused it.
+	
+СООБЩЕНИЕ:  не удалось получить данные от клиента: No connection could be made because the target machine actively refused it.
+	
+СООБЩЕНИЕ:  не удалось получить данные от клиента: No connection could be made because the target machine actively refused it.
+	
+СООБЩЕНИЕ:  не удалось получить данные от клиента: No connection could be made because the target machine actively refused it.
+	
+СООБЩЕНИЕ:  не удалось получить данные от клиента: No connection could be made because the target machine actively refused it.
+	
+СООБЩЕНИЕ:  не удалось получить данные от клиента: No connection could be made because the target machine actively refused it.
+	
+СООБЩЕНИЕ:  не удалось получить данные от клиента: No connection could be made because the target machine actively refused it.
+	
+СООБЩЕНИЕ:  не удалось получить данные от клиента: No connection could be made because the target machine actively refused it.
+	
+СООБЩЕНИЕ:  не удалось получить данные от клиента: No connection could be made because the target machine actively refused it.
+	
+СООБЩЕНИЕ:  не удалось получить данные от клиента: No connection could be made because the target machine actively refused it.
+	
+СООБЩЕНИЕ:  не удалось получить данные от клиента: No connection could be made because the target machine actively refused it.
+	
+СООБЩЕНИЕ:  не удалось получить данные от клиента: No connection could be made because the target machine actively refused it.
+	
+СООБЩЕНИЕ:  не удалось получить данные от клиента: No connection could be made because the target machine actively refused it.
+	
+СООБЩЕНИЕ:  не удалось получить данные от клиента: No connection could be made because the target machine actively refused it.
+	
+СООБЩЕНИЕ:  не удалось получить данные от клиента: No connection could be made because the target machine actively refused it.
+	
+СООБЩЕНИЕ:  не удалось получить данные от клиента: No connection could be made because the target machine actively refused it.
+	
+СООБЩЕНИЕ:  не удалось получить данные от клиента: No connection could be made because the target machine actively refused it.
+	
+СООБЩЕНИЕ:  не удалось получить данные от клиента: No connection could be made because the target machine actively refused it.
+	
+СООБЩЕНИЕ:  не удалось получить данные от клиента: No connection could be made because the target machine actively refused it.
+	
+СООБЩЕНИЕ:  не удалось получить данные от клиента: No connection could be made because the target machine actively refused it.
+	
+СООБЩЕНИЕ:  не удалось получить данные от клиента: No connection could be made because the target machine actively refused it.
+	
+СООБЩЕНИЕ:  не удалось получить данные от клиента: No connection could be made because the target machine actively refused it.
+	
+СООБЩЕНИЕ:  не удалось получить данные от клиента: No connection could be made because the target machine actively refused it.
+	
+СООБЩЕНИЕ:  не удалось получить данные от клиента: No connection could be made because the target machine actively refused it.
+	
+СООБЩЕНИЕ:  не удалось получить данные от клиента: No connection could be made because the target machine actively refused it.
+	
+СООБЩЕНИЕ:  не удалось получить данные от клиента: No connection could be made because the target machine actively refused it.
+	
+СООБЩЕНИЕ:  не удалось получить данные от клиента: No connection could be made because the target machine actively refused it.
+	
+СООБЩЕНИЕ:  не удалось получить данные от клиента: No connection could be made because the target machine actively refused it.
+	
+СООБЩЕНИЕ:  не удалось получить данные от клиента: No connection could be made because the target machine actively refused it.
+	
+СООБЩЕНИЕ:  не удалось получить данные от клиента: No connection could be made because the target machine actively refused it.
+	
+СООБЩЕНИЕ:  не удалось получить данные от клиента: No connection could be made because the target machine actively refused it.
+	
+СООБЩЕНИЕ:  не удалось получить данные от клиента: No connection could be made because the target machine actively refused it.
+	
+СООБЩЕНИЕ:  не удалось получить данные от клиента: No connection could be made because the target machine actively refused it.
+	
+СООБЩЕНИЕ:  не удалось получить данные от клиента: No connection could be made because the target machine actively refused it.
+	
+СООБЩЕНИЕ:  не удалось получить данные от клиента: No connection could be made because the target machine actively refused it.
+	
+СООБЩЕНИЕ:  не удалось получить данные от клиента: No connection could be made because the target machine actively refused it.
+	
+СООБЩЕНИЕ:  не удалось получить данные от клиента: No connection could be made because the target machine actively refused it.
+	
+СООБЩЕНИЕ:  не удалось получить данные от клиента: No connection could be made because the target machine actively refused it.
+	
+СООБЩЕНИЕ:  не удалось получить данные от клиента: No connection could be made because the target machine actively refused it.
+	
+СООБЩЕНИЕ:  не удалось получить данные от клиента: No connection could be made because the target machine actively refused it.
+	
+СООБЩЕНИЕ:  не удалось получить данные от клиента: No connection could be made because the target machine actively refused it.
+	
+СООБЩЕНИЕ:  не удалось получить данные от клиента: No connection could be made because the target machine actively refused it.
+	
+СООБЩЕНИЕ:  не удалось получить данные от клиента: No connection could be made because the target machine actively refused it.
+	
+СООБЩЕНИЕ:  не удалось получить данные от клиента: No connection could be made because the target machine actively refused it.
+	
+СООБЩЕНИЕ:  не удалось получить данные от клиента: No connection could be made because the target machine actively refused it.
+	
+СООБЩЕНИЕ:  не удалось получить данные от клиента: No connection could be made because the target machine actively refused it.
+	
+СООБЩЕНИЕ:  не удалось получить данные от клиента: No connection could be made because the target machine actively refused it.
+	
+СООБЩЕНИЕ:  не удалось получить данные от клиента: No connection could be made because the target machine actively refused it.
+	
+СООБЩЕНИЕ:  не удалось получить данные от клиента: No connection could be made because the target machine actively refused it.
+	
+СООБЩЕНИЕ:  процесс сбора статистики (PID 10292) был прерван исключением 0xC000013A
+ПОДСКАЗКА:  Описание этого шестнадцатеричного значения ищите во включаемом C-файле "ntstatus.h"
+СООБЩЕНИЕ:  процесс запуска автоочистки (PID 11256) был прерван исключением 0xC000013A
+ПОДСКАЗКА:  Описание этого шестнадцатеричного значения ищите во включаемом C-файле "ntstatus.h"
+СООБЩЕНИЕ:  завершение всех остальных активных серверных процессов

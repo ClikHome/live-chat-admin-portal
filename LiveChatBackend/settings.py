@@ -55,6 +55,7 @@ INSTALLED_APPS = [
     'tokens.apps.TokensConfig',
     'users.apps.UsersConfig',
     'oauth2.apps.Oauth2Config',
+    'domains.apps.DomainsConfig',
     # 'LiveChatBackend.zero_mq',
 ]
 
@@ -115,8 +116,8 @@ DATABASES = {
         'NAME': 'live_chat',
         'USER': 'eugene',
         'PASSWORD': 'qwerty123',
-        'HOST': '',
-        'PORT': '',
+        'HOST': 'localhost',
+        'PORT': '5432',
     }
 }
 
@@ -286,3 +287,18 @@ JWT_AUTH = {
 
     'JWT_AUTH_HEADER_PREFIX': 'JWT',
 }
+
+WHOISXMLAPI_SETTINGS = {
+    'username': 'JRazor',
+    'password': '5647382910'
+}
+
+# Email
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+
+# Email backend settings
+EMAIL_USE_TLS = True
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 587
+EMAIL_HOST_USER = ''
+EMAIL_HOST_PASSWORD = ''

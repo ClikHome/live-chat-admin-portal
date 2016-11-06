@@ -18,7 +18,7 @@
             <tr class="headings">
                 <th class="column-title" style="display: table-cell;">Id </th>
                 <th class="column-title" style="display: table-cell;">Channel name </th>
-                <th class="column-title" style="display: table-cell;">Domain </th>
+                <th class="column-title" style="display: table-cell;">Domains </th>
                 <th class="column-title" style="display: table-cell;">Created at </th>
                 <th class="column-title" style="display: table-cell;">Status </th>
                 <th class="column-title" style="display: table-cell;">Users </th>
@@ -30,17 +30,25 @@
         <tbody>
             {% for channel in channels %}
                 <tr class="even pointer">
+                    {# Channel pk #}
                     <td class=" ">{{ channel.pk }}</td>
 
+                    {# Title #}
                     <td class=" ">
                         <a href="{% url 'channel-detail' pk=channel.pk %}">
                             {{ channel.title }}
                         </a>
                     </td>
+
+                    {# Domains #}
                     <td class=" ">
-                        <a href="{{ channel.site }}">{{ channel.domain }}</a>
+                        {{ channel.websites|join:", "|default:"-" }}
                     </td>
+
+                    {# Created at #}
                     <td class=" ">{{ channel.created_at }}</td>
+
+                    {# Status #}
                     <td class=" ">
                         {% if channel.is_active %}
                             <span class="label label-success">Active</span>
@@ -48,8 +56,14 @@
                             <span class="label label-warning">Stopped</span>
                         {% endif %}
                     </td>
+
+                    {# Users #}
                     <td class=" ">{{ channel.users }}</td>
+
+                    {# Messages #}
                     <td class=" ">{{ channel.messages }}</td>
+
+                    {# Actions #}
                     <td>
                         <a href="{% url 'channel-detail' pk=channel.pk %}" class="btn btn-primary btn-xs">
                             <i class="fa fa-folder"></i> View </a>
@@ -57,7 +71,7 @@
                             <i class="fa fa-pencil"></i> Edit </a>
                         <a href="{% url 'channel-remove' pk=channel.pk %}" class="btn btn-danger btn-xs">
                             <i class="fa fa-trash-o"></i> Delete </a>
-                      </td>
+                    </td>
                 </tr>
             {% endfor %}
         </tbody>

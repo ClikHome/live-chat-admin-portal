@@ -1,0 +1,72 @@
+{% extends 'portal/base.html' %}
+
+{% block title %}
+    Remove domain {{ website.domain }}
+{% endblock %}
+
+
+{% block stylesheet %}
+    <style type="text/css" media="all">
+        .col-centered{
+            float: none;
+            margin: 0 auto;
+        }
+    </style>
+{% endblock %}
+
+
+{% block content %}
+    <section class="panel">
+        <br/>
+        <div class="text-center">
+            <h2>Are you sure you want to remove this domain?</h2>
+            <div class="clearfix"></div>
+        </div>
+
+        <br />
+
+        <div class="panel-body text-center">
+            <h3 class="green"><i class="fa fa-comments-o"></i> {{ website.domain }}</h3>
+
+            <br/>
+            <div class="row">
+                <div class="col-centered col-md-4">
+                    <table class="table table-striped table-bordered table-hover">
+                        <tbody>
+                            <tr>
+                                <td><i class="fa fa-calendar"></i> <b>Created at:</b></td>
+                                <td>{{ website.created_at }}</td>
+                            </tr>
+
+
+                            <tr>
+                                <td><i class="fa fa-calendar"></i> <b>Channel:</b></td>
+                                <td>{{ website.channel.title }}</td>
+                            </tr>
+
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <br/><br/>
+
+            <div class="row">
+                <div class="col-centered col-md-4">
+
+                    <form action="{% url 'domain-remove' domain=website.domain %}" method="post">
+                        {% csrf_token %}
+                        <div class="text-center mtop20">
+                            <a href="{% url 'domain-list' %}" class="btn btn-sm btn-primary">Cancel</a>
+                            <button type="submit" class="btn btn-sm btn-danger">Remove channel</button>
+                        </div>
+                    </form>
+
+                </div>
+            </div>
+
+
+        </div>
+
+      </section>
+{% endblock %}

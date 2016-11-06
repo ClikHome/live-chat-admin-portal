@@ -52,12 +52,15 @@ urlpatterns = [
     url(r'^grappelli/', include('grappelli.urls')),
     url(r'^admin/', admin.site.urls, name='admin'),
     url(r'^i18n/', include('django.conf.urls.i18n')),
+    url(r'^oauth2/', include('oauth2.urls')),
+
     url(r'^portal/', include('portal.urls'), name='portal'),
-    url(r'^channel/', include('channels.urls'), name='channel'),
+    url(r'^channels/', include('channels.urls'), name='channel'),
     url(r'^messages/', include('messages.urls')),
     url(r'^users/', include('users.urls')),
     url(r'^token/', include('tokens.urls')),
-    url(r'^oauth2/', include('oauth2.urls')),
+    url(r'^domains/', include('domains.urls')),
+
 
     # API
     url(r'^api/v1.0/', include([
@@ -68,6 +71,8 @@ urlpatterns = [
         ])),
         url(r'^messages/', include('messages.api.urls')),
         url(r'^channels/', include('channels.api.urls')),
+        url(r'^domains/', include('domains.api.urls')),
+        url(r'^users/', include('users.api.urls')),
     ]))
 
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

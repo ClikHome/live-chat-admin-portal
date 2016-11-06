@@ -1,0 +1,75 @@
+{% extends 'portal/base.html' %}
+
+{% block title %}
+    Domains
+{% endblock %}
+
+{% block stylesheet %}
+    {% include 'portal/_parts/datasets_css.html' %}
+{% endblock %}
+
+{% block content %}
+    <h3 class="text-center">Domains</h3>
+    <br /><br />
+
+    <table class="table table-striped jambo_table bulk_action" id="channels">
+        <thead>
+            <tr class="headings">
+                <th class="column-title" style="display: table-cell;">Domain </th>
+                <th class="column-title" style="display: table-cell;">Channel </th>
+                <th class="column-title" style="display: table-cell;">Created at </th>
+                <th class="column-title col-md-2" style="display: table-cell;">Actions </th>
+          </tr>
+        </thead>
+
+        <tbody>
+            {% for website in websites %}
+                <tr class="even pointer">
+                    {# Domain #}
+                    <td class=" ">{{ website.domain }}</td>
+
+                    {# Channel #}
+                    {% if website.channel %}
+                        <td class=" ">{{ website.channel.title }}</td>
+                    {% else %}
+                        <td> - </td>
+                    {% endif %}
+
+                    {# Created at #}
+                    <td class=" ">{{ website.created_at }}</td>
+
+                    {# Actions #}
+                    <td>
+                        {% with website.domain as domain %}
+                            <a href="{% url 'domain-detail' domain=domain %}" class="btn btn-primary btn-xs">
+                                <i class="fa fa-folder"></i> View </a>
+                            <a href="{% url 'domain-edit' domain=domain %}" class="btn btn-info btn-xs">
+                                <i class="fa fa-pencil"></i> Edit </a>
+                            <a href="{% url 'domain-remove' domain=domain %}" class="btn btn-danger btn-xs">
+                                <i class="fa fa-trash-o"></i> Delete </a>
+                        {% endwith %}
+                    </td>
+
+                </tr>
+            {% empty %}
+                <h4>You have not domains</h4>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <br />
+
+    {# Create new domain #}
+    <button type="button" class="btn btn-success btn-sm" data-toggle="modal" data-target="#create-new-channel"
+            onclick="location.href='{% url "domain-create" %}';">
+        Create new domain
+    </button>
+{% endblock %}
+
+{% block script %}
+    {% include 'portal/_parts/datasets_js.html' %}
+
+    <script>
+        $('#channels').dataTable();
+    </script>
+{% endblock %}

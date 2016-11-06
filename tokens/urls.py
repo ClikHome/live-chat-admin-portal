@@ -5,7 +5,6 @@ from django.conf.urls import url, include
 from django.contrib import admin
 from rest_framework.urlpatterns import format_suffix_patterns
 
-from .views_api import TokenViewSet
 
 
 urlpatterns = [

@@ -4,24 +4,15 @@
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import generics, permissions
-from rest_framework import viewsets
-from rest_framework.response import Response
-from django.shortcuts import get_object_or_404
 
 from .models import Token
 from .serializers import TokenSerializer
 
 
-class TokenViewSet(viewsets.ViewSet):
+class ChannelTokensAPIList(generics.ListAPIView):
     model = Token
     serializer_class = TokenSerializer
-    queryset = model.objects.all()
 
-    def retrieve(self, request, pk=None):
-        queryset = Token.objects.all()
-        token = queryset.filter(uid=pk).first()
-        serializer = TokenSerializer(token)
-
-        if token:
-            return Response({'data': serializer.data, 'success': True})
-        return Response({'data': {}, 'success': False})
+    def get_queryset(self):
+        queryset = super(ChannelTokensAPIList, self).get_queryset()
+        return queryset.filter(uid=self.kwargs.get('channel'))

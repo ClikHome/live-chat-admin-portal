@@ -1,0 +1,370 @@
+{% extends 'portal/base.html' %}
+{% load static %}
+{% load widget_tweaks %}
+{% load i18n %}
+{% load validation_fields %}
+
+{% block title %}
+
+{% endblock %}
+
+{% block stylesheet %}
+    <style type="text/css" media="all">
+        .col-centered{
+            float: none;
+            margin: 0 auto;
+        }
+
+        #step-2-form.form-horizontal .has-feedback .form-control-feedback {
+            top: -5px;
+            right: -30px;
+        }
+
+        #step-2-form .btn-group {
+            width: 110px;
+            margin: 0 auto;
+        }
+    </style>
+{% endblock %}
+
+{% block content %}
+    <h3 class="text-center">Register new domain name</h3>
+    <br />
+
+
+
+    <div id="wizard" class="form_wizard wizard_horizontal">
+        <ul class="wizard_steps">
+            <li>
+                <a href="#step-1">
+                    <span class="step_no">1</span>
+                    <span class="step_descr">{% trans 'Step 1' %}<br>
+                        <small>{% trans 'Input your website link' %}</small>
+                    </span>
+                </a>
+            </li>
+
+            <li>
+                <a href="#step-2">
+                    <span class="step_no">2</span>
+                    <span class="step_descr">Step 2<br>
+                        <small>{% trans 'A confirmation email' %}</small>
+                    </span>
+                </a>
+            </li>
+
+            <li>
+                <a href="#step-3">
+                    <span class="step_no">3</span>
+                    <span class="step_descr">Step 3<br>
+                        <small>{% trans 'Change email' %}</small>
+                    </span>
+                </a>
+            </li>
+
+            <li>
+                <a href="#step-4">
+                    <span class="step_no">4</span>
+                    <span class="step_descr">Step 4<br>
+                        <small>Domain confirmation</small>
+                    </span>
+                </a>
+            </li>
+        </ul>
+
+        <br />
+        <div id="step-1">
+            <form method="post" class="well form-horizontal form-label-left" id="step-1-form">
+                <div class="form-group">
+                    <label class="control-label col-md-3" for="{{ form.url.id_for_label }}">
+                        {% trans 'Website URL' %}
+                    </label>
+
+                    <div class="col-md-7">
+                        {{ form.url }}
+                    </div>
+                </div>
+            </form>
+        </div>
+        <div id="step-2">
+            <div class="x_content well">
+                <h4 class="StepTitle text-center">You have access to this email?</h4>
+
+                <h3 class="text-center"><b><span id="email"></span></b></h3>
+                <br/>
+
+                <div class="">
+                    <form method="post" class="form-horizontal text-center" id="step-2-form" >
+                        <div class="form-group">
+                            <div class=" ">
+                                <div class="btn-group" data-toggle="buttons">
+                                    <label class="btn btn-default">
+                                        <input type="radio" name="whois_email" value="yes" /> Yes
+                                    </label>
+                                    <label class="btn btn-default">
+                                        <input type="radio" name="whois_email" value="no" /> No
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <div id="step-3">
+            <form id="step-3-form" method="post" class="well form-horizontal form-label-left">
+                <div class="form-group">
+                    <label class="col-lg-3 control-label">New email </label>
+                    <div class="col-md-7">
+                        <input type="email" maxlength="255" class="form-control" name="new_email" value="eanegin@gmail.com" />
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="col-lg-3 control-label">Page with this email </label>
+                    <div class="col-md-7">
+                        <input type="url" maxlength="255" class="form-control" name="new_email_page" value="http://google.com/contact"/>
+                    </div>
+                </div>
+            </form>
+        </div>
+        <div id="step-4">
+            <h2 class="text-center">Email will sent to</h2>
+            <h1 id="email_verification" class="text-center"></h1>
+
+
+        </div>
+
+{% endblock %}
+
+{% block script %}
+    <script>
+        $('#domain_check').on('click',function (e){
+           $.ajax({
+               type: 'POST',
+               url : "{% url 'api-get-owner' %}",
+               data: {'domain': document.getElementById("id_url").value},
+               dataType: 'json',
+               success: function(data) {
+                    console.log('success', data);
+
+               },
+               error:function(exception){alert('Exeption:'+exception);}
+            });
+         e.preventDefault();
+        });
+    </script>
+
+    <!-- Bootstrap Validator -->
+    <script>
+        $(document).ready(function() {
+            $('#step-1-form').bootstrapValidator({
+                live: 'enabled',
+                submitButton: '.buttonNext',
+                message: 'This value is not valid',
+                feedbackIcons: {
+                    valid: 'glyphicon glyphicon-ok',
+                    invalid: 'glyphicon glyphicon-remove',
+                    validating: 'glyphicon glyphicon-refresh'
+                },
+
+                fields: {
+                    url: {
+                        validators: {
+                            notEmpty: {
+                                message: 'This field is required and cannot be empty'
+                            },
+
+                            uri: {
+                                message: 'The website address is not valid'
+                            },
+
+                            remote: {
+                                url: '{% url 'api-domain-available' %}',
+                                message: 'The URL is not available'
+                            }
+                        }
+                    }
+                }
+            });
+
+            $('#step-2-form').bootstrapValidator({
+                submitButton: '.buttonNext',
+                feedbackIcons: {
+                    valid: 'glyphicon glyphicon-ok',
+                    invalid: 'glyphicon glyphicon-remove',
+                    validating: 'glyphicon glyphicon-refresh'
+                },
+                excluded: ':disabled',
+
+                fields: {
+                    whois_email: {
+                        validators: {
+                            notEmpty: {
+                                message: 'This field is required and cannot be empty'
+                            }
+                        }
+                    }
+                }
+            });
+        });
+    </script>
+
+    <!-- jQuery Smart Wizard -->
+    <script src="{% static 'vendors/jQuery-Smart-Wizard/js/jquery.smartWizard.js' %}"></script>
+
+    <script>
+        $(document).ready(function() {
+            $('#wizard').smartWizard({
+                transitionEffect: "slideLeft",  // Effect on navigation, none/fade/slide/slideleft
+                labelNext: '{% trans "Next" %}',
+                labelPrevious: '{% trans "Previous" %}',
+                labelFinish: '{% trans "Finish" %}',
+                onLeaveStep: leaveAStepCallback,
+                onFinish: onFinishCallback
+            });
+
+            // After every step
+            function leaveAStepCallback(obj, context) {
+                return validateSteps(context.fromStep)
+            }
+
+            // After all steps
+            function onFinishCallback(objs, context){
+                if (validateAllSteps()) {
+                    var url = document.getElementById("id_url").value;
+                    var email = document.getElementById('email_verification').textContent;
+
+                    $.ajax({
+                        type: 'POST',
+                        url : "{% url 'api-domain-create' %}",
+                        data: {
+                            'url': url,
+                            'email': email
+                        },
+                        dataType: 'json',
+                        async: false,
+                        success: function(data) {
+                            if (data.success) {
+                                console.log('Success')
+
+                            } else if (!data.success) {
+                                console.log('Error: ' + data.error)
+                            }
+                        },
+
+                        error: function(exception){
+                            console.log('Error: ' + exception.error)
+                        }
+                    });
+                }
+
+                window.location.replace("{% url 'domain-list' %}");
+            }
+
+            // Step validation logic
+            function validateSteps(stepnumber){
+                var isStepValid = true;
+
+                // Validate URL
+                if (stepnumber == 1) {
+                    if (validate_step('#step-1-form')) {
+                        [isStepValid, error_message] = step_first();
+                    } else { isStepValid = false; }
+                    return isStepValid;
+
+                // Validation email owner
+                } else if (stepnumber == 2){
+                    if (validate_step('#step-2-form')) {
+                        step_3_is_valid = false;
+
+                        var step_2_data = $('#step-2-form').serializeArray(),
+                            value = step_2_data[0].value;
+
+                        // If owner have access to email, skip 3
+                        if (value == 'yes') {
+                            var email = document.getElementById('email').textContent;
+                            document.getElementById('email_verification').innerHTML = email;
+                            step_3_is_valid = true;
+
+                        }
+
+                    } else { isStepValid = false; }
+                    return isStepValid;
+
+                //
+                } else if (stepnumber == 3) {
+                    if (step_3_is_valid) {
+                        return true;
+                    }
+                    if (validate_step('#step-3-form')) {
+                        var step_3_data = $('#step-3-form').serializeArray();
+                        console.log(step_3_data);
+                    } else { isStepValid = false; }
+                    return isStepValid;
+
+
+                } else if (stepnumber == 4) {
+                    return isStepValid;
+                }
+            }
+
+            function validateAllSteps(){
+                var isStepValid = true;
+                // all step validation logic
+                return isStepValid;
+            }
+
+            // Check field validation by bootstrapValidator
+            function validate_step(form_id) {
+                var bootstrapValidator = $(form_id).data('bootstrapValidator');
+                bootstrapValidator.validate();
+                return bootstrapValidator.isValid();
+            }
+
+            // bootstrapValidator error
+
+            function step_first() {
+                var url = document.getElementById("id_url").value;
+
+                var ajax_success = false;
+                var error_message = null;
+
+                $.ajax({
+                    type: 'POST',
+                    url : "{% url 'api-get-owner' %}",
+                    data: {'domain': url},
+                    dataType: 'json',
+                    async: false,
+                    success: function(data) {
+                        if (data.success) {
+                            ajax_success = true;
+                            document.getElementById("email").textContent = data.data.email;
+
+                        } else if (!data.success) {
+                            error_message = data.error;
+                        }
+                    },
+
+                    error: function(exception){
+                        error_message = exception.error;
+                    }
+                });
+
+                return [ajax_success, error_message]
+            }
+
+            $('#wizard_verticle').smartWizard({
+                transitionEffect: 'slide'
+            });
+
+            $('.buttonNext').addClass('btn btn-success');
+            $('.buttonPrevious').addClass('btn btn-primary');
+            $('.buttonFinish').addClass('btn btn-default');
+        });
+    </script>
+    <!-- /jQuery Smart Wizard -->
+
+
+
+{% endblock %}

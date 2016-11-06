@@ -1,0 +1,116 @@
+{% extends 'portal/base.html' %}
+{% load static %}
+{% load widget_tweaks %}
+{% load i18n %}
+{% load validation_fields %}
+
+
+{% block title %}
+    Edit domain
+{% endblock %}
+
+
+{% block stylesheet %}
+    <!-- Select2 -->
+    <link href="{% static 'vendors/select2/dist/css/select2.min.css' %}" rel="stylesheet">
+
+    <style type="text/css" media="all">
+        .col-centered{
+            float: none;
+            margin: 0 auto;
+        }
+
+        select, input {
+
+        }
+
+    </style>
+{% endblock %}
+
+
+{% block content %}
+    <br />
+    <h3 class="text-center">Edit domain <b>"{{ website.domain }}"</b></h3>
+    <br />
+
+    <form action="{% url 'domain-edit' domain=website.domain %}" method="post" class="well form-horizontal form-label-left">
+        {% csrf_token %}
+
+        {% for field in form %}
+            <div class="form-group">
+                <label class="control-label col-md-3" for="{{ field.id_for_label }}">
+                    {{ field.label }}
+                </label>
+
+                <div class="col-md-7">
+                    {{ field }}
+                </div>
+
+                <div class="help-block with-errors">
+                    {% if field.errors %}
+                        {{ field.errors }}
+                    {% endif %}
+                </div>
+            </div>
+
+        {% endfor %}
+
+        <br />
+
+        <div class="text-center mtop20">
+            <a href="{% url 'domain-list' %}" class="btn btn-sm btn-danger">Cancel</a>
+            <button type="submit" class="btn btn-sm btn-success">Save changes</button>
+        </div>
+    </form>
+{% endblock %}
+
+
+{% block script %}
+    <!-- Select2 -->
+    <script src="{% static 'vendors/select2/dist/js/select2.full.min.js' %}"></script>
+
+    <script type="text/javascript">
+        $(document).ready(function() {
+            $(".select2_single").select2({
+                placeholder: "Select a channel",
+                allowClear: true
+            });
+        });
+    </script>
+
+    <!-- / Select2 -->
+
+    <!-- Bootstrap Validator -->
+    <script>
+        $(document).ready(function() {
+            $('form').bootstrapValidator({
+                live: 'enabled',
+                message: 'This value is not valid',
+                feedbackIcons: {
+                    valid: 'glyphicon glyphicon-ok',
+                    invalid: 'glyphicon glyphicon-remove',
+                    validating: 'glyphicon glyphicon-refresh'
+                },
+
+                fields: {
+                    url: {
+                        validators: {
+                            notEmpty: {
+                                message: 'This field is required and cannot be empty'
+                            },
+
+                            uri: {
+                                message: 'The website address is not valid'
+                            },
+
+                            remote: {
+                                url: '{% url 'api-domain-available' %}',
+                                message: 'You already use this URL'
+                            }
+                        }
+                    }
+                }
+            });
+        });
+    </script>
+{% endblock %}
