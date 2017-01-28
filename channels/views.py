@@ -68,6 +68,7 @@ def channel_detail(request, pk=None):
 
     channel.users = ChatUser.objects.filter(channel=channel)
     channel.messages = Message.objects.filter(channel=channel)
+    channel.websites = Website.objects.filter(channel=channel)
 
     return render(request, 'portal/channels/detail.html', {'channel': channel})
 
@@ -77,7 +78,7 @@ def channel_list(request):
     # if not request.user.is_authenticated():
     #     return redirect(reverse('admin'))
 
-    channels = Channel.objects.filter(owner_id=request.user.id)
+    channels = Channel.objects.filter(owner=request.user)
 
     for channel in channels:
         channel.messages = Message.active.filter(channel=channel).count()

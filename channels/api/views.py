@@ -17,6 +17,9 @@ from urlparse import urlparse
 from tokens.models import Token
 from ..models import Channel
 from .serializers import (ChannelSerializer,)
+from messages.models import Message
+from messages.api.serializers import MessageSerializer
+from domains.models import Website
 
 
 class ChannelRetrieve(generics.RetrieveAPIView):
@@ -26,21 +29,33 @@ class ChannelRetrieve(generics.RetrieveAPIView):
     ]
 
     def retrieve(self, request, *args, **kwargs):
-        channel_uid = request.GET.get('channel')
+        channel_uid = request.GET.get('channel_uid')
         domain = request.GET.get('domain')
         http_referer = request.META.get('HTTP_REFERER')
-
-        error = lambda x: {'success': False, 'error': x}
+        http_referer = 'http://site.com/'  # !!! DEBUG
 
         if http_referer and domain == urlparse(http_referer).netloc:
-            channel = self.queryset.get(uid=channel_uid, domain=domain)
+            try:
+                website = Website.objects.get(domain=domain)
 
-            if channel and channel.is_active:
-                return Response({'success': True})
-            elif channel and not channel.is_active:
-                return Response(error('Channel is not active'))
+                if not (channel_uid == website.channel.uid):
+                    return Response(status=status.HTTP_404_NOT_FOUND)
 
-        return Response(error(None))
+                # Channel is not active
+                if website.channel and not website.channel.is_active:
+                    return Response(status=status.HTTP_403_FORBIDDEN)
+
+                messages = Message.active.filter(channel=website.channel).order_by('-created_at')[:30]
+                serializer = MessageSerializer(messages, many=True)
+
+                return Response({'success': True, 'messages': serializer.data})
+
+            # Channel not exists
+            except Channel.DoesNotExist:
+                return Response(status=status.HTTP_404_NOT_FOUND)
+
+        # Wrong referrer
+        return Response(status=status.HTTP_400_BAD_REQUEST)
 
 
 class ChannelCreate(generics.CreateAPIView):

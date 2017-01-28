@@ -11,6 +11,7 @@ from users.models import ChatUser
 
 def set(message):
     print 'Got message: ' + str(message)
+
     message = json.loads(message)
     data, data_type = message['data'], message['data_type']
 

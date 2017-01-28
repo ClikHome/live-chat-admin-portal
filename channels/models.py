@@ -11,6 +11,7 @@ import uuid
 import redis
 
 from LiveChatBackend import mixins
+# from domains.models import Website
 
 
 def validate_site(value):
@@ -45,8 +46,8 @@ class Channel(mixins.ModelMixin, models.Model):
         super(Channel, self).save(*args, **kwargs)
 
         # Save channel to settings
-        # r = redis.Redis(*settings.REDIS_CONNECTION)
-        # r.hset('channels', self.uid, self.pk)
+        r = redis.Redis(*settings.REDIS_CONNECTION)
+        r.hset('channels', self.uid, self.pk)
 
     def __unicode__(self):
         return unicode(self.title)

@@ -6,6 +6,8 @@ from django.utils.translation import ugettext_lazy as _
 from dateutil.relativedelta import relativedelta
 from django.conf import settings
 import redis
+import json
+from datetime import datetime
 
 from channels.models import Channel
 from LiveChatBackend.managers import OnlyActiveManager
@@ -57,12 +59,10 @@ class ChatUser(ModelMixin, models.Model):
         verbose_name_plural = _('Users')
         unique_together = [
             ('username', 'channel'),
-            ('phone', 'channel'),
         ]
         ordering = ('username',)
 
     username = models.CharField(max_length=50)
-    phone = models.CharField(max_length=50, null=True)
     ip = models.GenericIPAddressField(null=True, blank=True)
     channel = models.ForeignKey(Channel, related_name='user_channel')
     last_activity = models.DateTimeField(null=True, blank=True)
@@ -70,6 +70,15 @@ class ChatUser(ModelMixin, models.Model):
     # managers
     objects = models.Manager()
     active = OnlyActiveManager()
+
+    @classmethod
+    def from_json(cls, data):
+        if isinstance(data, (str, unicode)):
+            data = json.loads(data)
+        elif not isinstance(data, dict):
+            raise TypeError
+
+        return cls(**data)
 
     def save(self, *args, **kwargs):
         super(ChatUser, self).save(*args, **kwargs)

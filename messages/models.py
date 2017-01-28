@@ -40,7 +40,12 @@ class Message(models.Model):
             return datetime.strptime(
                 datetime_str, settings.MESSAGES_DATETIME_FORMAT)
 
-        user = ChatUser.active.get(username=data['username'])
+        try:
+            user = ChatUser.active.get(username=data['username'])
+
+        # Not Found
+        except ChatUser.DoesNotExist:
+            return None
 
         return cls(
             body=data['body'],

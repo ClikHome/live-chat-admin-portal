@@ -21,7 +21,7 @@ urlpatterns = [
     ),
 
     url(
-        r'(?P<domain>[w]?\.?[a-zA-Z0-9][a-zA-Z0-9-]{1,61}[a-zA-Z0-9]\.[a-zA-Z]{2,})/',
+        r'(?P<domain>[w]?\.?[a-zA-Z0-9][a-zA-Z0-9-]{1,61}[a-zA-Z0-9]\.[a-zA-Z]{2,})/', # prod
         include([
             url(
                 r'^detail',

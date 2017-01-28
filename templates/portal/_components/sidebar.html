@@ -24,9 +24,15 @@
                 </ul>
             </li>
 
-            <li><a><i class="fa fa-comments-o"></i> Messages <span class="fa fa-chevron-down"></span></a>
+            <li><a><i class="fa fa-comments-o"></i> Chats <span class="fa fa-chevron-down"></span></a>
                 <ul class="nav child_menu">
-                    <li><a href="{% url 'chat' %}">Chat</a></li>
+                    {% for channel in channels %}
+                        <li>
+                            <a href="{% url 'chat-individual' pk=channel.uid %}">
+                                {{ channel.title }}
+                            </a>
+                        </li>
+                    {% endfor %}
                 </ul>
             </li>
 

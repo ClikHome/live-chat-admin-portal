@@ -5,6 +5,13 @@
 {% endblock %}
 
 
+{% block stylesheet %}
+    code {
+        font-family: monospace;
+    }
+{% endblock %}
+
+
 {% block content %}
     <h3>Channel "{{ channel.title }}"</h3>
     <br />
@@ -31,6 +38,34 @@
       </div>
     </div>
     <br />
+
+    <div class="row">
+        <div class="col-centered col-md-6">
+            <table class="table table-striped table-bordered table-hover">
+                <tbody>
+                    <tr>
+                        <td><i class="fa fa-calendar"></i><b> Title:</b></td>
+                        <td>{{ channel.title }}</td>
+                    </tr>
+
+                    <tr>
+                        <td><i class="fa fa-calendar"></i><b> Websites:</b></td>
+                        <td>{{ channel.websites|join:", "|default:'-' }}</td>
+                    </tr>
+
+                    <tr>
+                        <td><i class="fa fa-calendar"><b> Link:</b></i> </td>
+                        <td>
+                            <code>
+                                &lt;script src="chat.js" data-channel-uid="{{ channel.uid }}"&gt;&lt;/script&gt;
+                            </code>
+                        </td>
+                    </tr>
+
+                </tbody>
+            </table>
+        </div>
+    </div>
 
 
 
